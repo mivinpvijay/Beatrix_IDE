@@ -2,7 +2,7 @@ keyword_c=['main','char','int','float','return']
 sym_ind=0
 symtab=[None]*100
 for i in range(100):
-    symtab[i]=[None]*2
+    symtab[i]=[None]*3
 #######################################################################################################################
 #printdatatype
 def print_dtype(variable):
@@ -55,10 +55,16 @@ def insertintoSymTab(variable_arr,dtype):
                 symtab[sym_ind][1]=dtype
                 sym_ind=sym_ind+1
     #print symtab
-
-
-
-
+###################################################################################################################
+def insertval(var,val):
+    for i in range(sym_ind):
+        if (symtab[i][0]==var):
+            symtab[i][2]=val
+################################################################################################################
+def checkval(var):
+    for i in range(sym_ind):
+        if(symtab[i][0]==var):
+           return symtab[i][2]
 
 
 #testing portion

@@ -107,6 +107,8 @@ def initialization(b, length):
     if(d==3):
         var = a.replace("set ","")
         #print(var+";")
+        v,lim=var.split("=")
+        symbol_table.insertval(v,lim)
         program = program + var+";\n"
         var=""
         #print program
@@ -162,7 +164,24 @@ def for_st(b,length):
         else:
             program=program+syntax_selection.type_for(lang, v, l1, l2, 2)+"\n"
     else:
-        print("under construction")
+        if not l2.isdigit():
+            test=symbol_table.checkval(l2)
+            if test!=None:
+
+                if l1 > test:
+                    program = program + syntax_selection.type_for(lang, v, l1, l2, 1) + "\n"
+                else:
+                    program = program + syntax_selection.type_for(lang, v, l1, l2, 2) + "\n"
+        if not l1.isdigit():
+            test=symbol_table.checkval(l1)
+            if test!=None:
+
+                if test > l2:
+                    program = program + syntax_selection.type_for(lang, v, l1, l2, 1) + "\n"
+                else:
+                    program = program + syntax_selection.type_for(lang, v, l1, l2, 2) + "\n"
+
+
 #######################################################################################################################
 #works if the intent is if_statement
 def if_st(b,length):

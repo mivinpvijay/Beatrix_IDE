@@ -44,8 +44,8 @@ def isExisting(variable):
     return 0
 #######################################################################################################################
 def insertintoSymTab(variable_arr,dtype):
-    print variable_arr
-    print dtype
+    #print variable_arr
+    #print dtype
     global symtab
     global sym_ind
     if(isExisting(variable_arr))==0:
@@ -54,7 +54,7 @@ def insertintoSymTab(variable_arr,dtype):
                 symtab[sym_ind][0]=variable_arr
                 symtab[sym_ind][1]=dtype
                 sym_ind=sym_ind+1
-    print symtab
+    #print symtab
 
 
 

@@ -4,7 +4,7 @@ import syntax_selection
 import response
 lang="c"
 var_count=0
-program=""
+program="int main(){\n"
 a=""
 d=0
 statement=None
@@ -20,7 +20,7 @@ def find_intent(b):
     global intent
     c = 0
     length=len(b)
-    print(length)
+    #print(length)
     for i in range(length):
         if (b[i][0] == "intent"):
             #print(b[i][1])
@@ -46,7 +46,7 @@ def get_variable(b):
         if (j + 1 != len(b)):
             init_var = init_var + "," + b[j + 1]
     init_var=b[1]+init_var
-    print init_var
+    #print init_var
     if(lang=="c"):
         var=init_var
     elif(lang=="cpp"):
@@ -56,7 +56,7 @@ def get_variable(b):
 def declaration(b,length):
     global var_count
     global program
-    print "declaration working"
+    #print "declaration working"
     global d
     global init_var
     global datatype
@@ -70,19 +70,19 @@ def declaration(b,length):
             d = d + 1
     if(variable[0]==None):
         hello(response.getrespo(1))
-    print datatype
+    #print datatype
     if(datatype==None):
         hello(response.getrespo(2))
     if(d==2):
-        print (variable, datatype)
-        print var_count
+        #print (variable, datatype)
+        #print var_count
         for i in range(var_count):
             a=variable[i]
             symbol_table.insertintoSymTab(a, datatype)
         s= datatype+" "+init_var+";"
-        print s
+        #print s
         program=program+"\n"+s
-        print program
+        #print program
         d=0
         var=""
         var_count=0
@@ -94,8 +94,8 @@ def initialization(b, length):
     global program
     global d
     global a
-    print a
-    print "initialization"
+    #print a
+    #print "initialization"
     for i in range(length):
         if(b[i][0]=="variable"):
             d=d+1
@@ -106,15 +106,16 @@ def initialization(b, length):
         else:d=d+1
     if(d==3):
         var = a.replace("set ","")
-        print(var+";")
-        program = program + var+";"
+        #print(var+";")
+        program = program + var+";\n"
         var=""
-        print program
+        #print program
         d=0
 #######################################################################################################################
 #works if the intent is print
 def print_st(b,length):
     global intent
+    global program
     j=0
     c=""
     global variable
@@ -130,16 +131,19 @@ def print_st(b,length):
             j=j+1
         else:
             c=c+symbol_table.print_dtype(variable[i])
-    print(syntax_selection.type_print(lang, c, var))
+    k=syntax_selection.type_print(lang, c, var)
+    program = program + k +"\n"
+
 #######################################################################################################################
 #read fn
 def read(b,length):
     global a
     print a
-
+###############################################################################################################
 #works if the intent is for
 def for_st(b,length):
     global a
+    global program
     #print a
     cond=a
     elim=['for','to','do','(',')']
@@ -154,36 +158,41 @@ def for_st(b,length):
     if l1.isdigit() and l2.isdigit():
     #l1 and l2 comparisons
         if l1>l2:
-            print(syntax_selection.type_for(lang,v,l1,l2,1))
+            program=program+syntax_selection.type_for(lang, v, l1, l2, 1)+"\n"
         else:
-            print(syntax_selection.type_for(lang,v,l1,l2,2))
+            program=program+syntax_selection.type_for(lang, v, l1, l2, 2)+"\n"
     else:
         print("under construction")
 #######################################################################################################################
 #works if the intent is if_statement
 def if_st(b,length):
     global a
+    global program
     cond=a
     elim=['if','then','(',')']
     for i in range(len(elim)):
         cond=cond.replace(elim[i],"")
     cond.strip(" ")
-    print cond
-    print("if("+cond+")\n{")
+    #print cond
+    program=program+"if("+cond+")\n{\n"
 #######################################################################################################################
 #works if the intent is while_statement
 def while_st(b,length):
     global a
+    global program
     cond=a
     elim=['while','do','(',')']
     for i in range(len(elim)):
         cond=cond.replace(elim[i],"")
     cond.strip(" ")
-    print cond
-    print("while("+cond+")\n{")
+    #print cond
+    program=program+"while("+cond+")\n{\n"
 ############################################################################################################
 def end_fn(b,length):
-    print("}\n")
+    global program
+    program = program + "}\n"
+    if(length==1):
+        print program
 
 
 
@@ -216,7 +225,7 @@ def hello(s):
     global a
     a=raw_input(s)
     b=request_wit_backend.wit_response(a)
-    print(b)
+    #print(b)
     find_intent(b)
 
 def demo_main():
